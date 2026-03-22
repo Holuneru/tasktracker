@@ -11,6 +11,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+
+
+
 
 @RestController
 @RequestMapping("/api/projects")
@@ -19,11 +28,27 @@ public class ProjectController {
 
     private final ProjectService projectService;
 
+    @GetMapping("/ownerId/{ownerId}")
+    public List<ProjectDto> getAllProjectsByOwnerId(@PathVariable Long ownerId) {
+        return projectService.getAllProjectsByOwnerId(ownerId);
+    }
+    
 
-    @PostMapping()
+    @GetMapping
+    public List<ProjectDto> getAllProjectDto() {
+        return projectService.getAllProjectDto();
+    }
+    
+
+    @PostMapping
     public ProjectDto createProject(@RequestBody Project project) {
         return projectService.createProject(project);
     }
-    
+
+
+    @DeleteMapping("/{id}")
+    public ProjectDto delProject(@PathVariable Long id){
+        return projectService.delProject(id);
+    }
 
 }

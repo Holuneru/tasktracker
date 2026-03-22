@@ -5,11 +5,13 @@ import org.springframework.stereotype.Repository;
 
 import com.example.tasktracker.Entity.Project;
 
-import java.util.Optional;
+import java.util.List;
+
 
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long>{
-    Optional<Project> findByOwnerId(Long ownerId);
+    List<Project> findByOwnerId(Long ownerId);
+
     
 }

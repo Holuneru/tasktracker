@@ -1,5 +1,8 @@
 package com.example.tasktracker.Service;
 
+import java.util.List;
+
+
 import org.springframework.stereotype.Service;
 
 import com.example.tasktracker.DTO.UserDto;
@@ -15,7 +18,11 @@ import lombok.extern.slf4j.Slf4j;
 public class UserService {
 
     private final UserRepository userRepository;
-    
+
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
+
     public User getUserById(Long id){
         User user = userRepository.findById(id).orElseThrow(()-> new RuntimeException("User undefinde by id: "+ id));
         return user;
