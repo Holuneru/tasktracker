@@ -16,11 +16,31 @@ public class UserService {
 
     private final UserRepository userRepository;
     
+    public User getUserById(Long id){
+        User user = userRepository.findById(id).orElseThrow(()-> new RuntimeException("User undefinde by id: "+ id));
+        return user;
+    }
 
     public UserDto registerUser(User user){
         userRepository.save(user);
         log.info("User created!");
         UserDto dto = new UserDto(user.getName(), user.getEmail());
+        return dto;
+
+    }
+
+    public UserDto loginUser(User user){
+
+        User userAuth = userRepository.findByName(user.getName()).orElseThrow(()-> new RuntimeException("incorrect user_name"));
+        if (!userAuth.getPassword().equals(user.getPassword())) {
+            throw new RuntimeException("incorrect user_password");
+        }
+        if (!userAuth.getEmail().equals(user.getEmail())) {
+            throw new RuntimeException("incorrect user_email");
+        }
+        
+        UserDto dto = new UserDto(user.getName(), user.getEmail());
+        log.info("User logged");
         return dto;
 
     }
