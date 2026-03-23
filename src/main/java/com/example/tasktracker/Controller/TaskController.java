@@ -19,11 +19,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 
+
+
 @RestController
 @RequestMapping(path = "/api/tasks")
 @RequiredArgsConstructor
 public class TaskController {
     private final TaskService taskService;
+    
+    @GetMapping
+    public List<TaskDto> getAllTasks() {
+        return taskService.getAllTaskList();
+    }
+    
 
     @GetMapping("projects/{projectId}/tasks")
     public List<TaskDto> getAllProjectTasks(@PathVariable Long projectId) {

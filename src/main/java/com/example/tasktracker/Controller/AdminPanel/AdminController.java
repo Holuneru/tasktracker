@@ -38,7 +38,7 @@ public class AdminController {
     
     @GetMapping("/tasks")
     public List<Task> getAllTasks() {
-        return taskService.findAllTasks();
+        return taskService.getTasksFull();
     }
     
     

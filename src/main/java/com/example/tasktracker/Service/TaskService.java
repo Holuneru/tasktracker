@@ -27,7 +27,7 @@ public class TaskService {
     private final ProjectRepository projectRepository;
 
     //ADMIN
-    public List<Task> findAllTasks(){
+    public List<Task> getTasksFull(){
         return taskRepository.findAll();
     }
     //ADMIN
@@ -38,6 +38,21 @@ public class TaskService {
         List<Task> tasks = taskRepository.findByProjectId(projectId);
         return tasks.stream().map(task -> new TaskDto(task.getTitle(), task.getDescription(), task.getStatus(), task.getPriority(), project.getName(),user.getName())).toList();
     }
+
+    public List<TaskDto> getAllTaskList(){
+
+        List<Task> tasks = taskRepository.findAll();
+        return tasks.stream().map(task -> new TaskDto(
+            task.getTitle(),
+            task.getDescription(),
+            task.getStatus(),
+            task.getPriority(),
+            projectRepository.findById(task.getProjectId()).orElseThrow().getName(),
+            userRepository.findById(task.getAssigneeId()).orElseThrow().getName()))
+            .toList();
+
+    }
+
 
     public TaskDto createTask(Task task){
 
