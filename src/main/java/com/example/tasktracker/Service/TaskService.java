@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+
 import com.example.tasktracker.DTO.TaskDto;
 import com.example.tasktracker.Entity.Project;
 import com.example.tasktracker.Entity.Task;
@@ -31,7 +32,12 @@ public class TaskService {
     }
     //ADMIN
 
-
+    public List<TaskDto> getAllProjecTasks(Long projectId){
+        Project project = projectRepository.findById(projectId).orElseThrow(()-> new RuntimeException("Project undefinde"));
+        User user = userRepository.findById(project.getOwnerId()).orElseThrow();
+        List<Task> tasks = taskRepository.findByProjectId(projectId);
+        return tasks.stream().map(task -> new TaskDto(task.getTitle(), task.getDescription(), task.getStatus(), task.getPriority(), project.getName(),user.getName())).toList();
+    }
 
     public TaskDto createTask(Task task){
 
