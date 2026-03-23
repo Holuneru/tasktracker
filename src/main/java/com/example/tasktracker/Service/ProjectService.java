@@ -22,6 +22,13 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
 
+    //Admin
+
+    public List<Project> finaAllProjects(){
+        return projectRepository.findAll();
+    }
+
+    //ADMIN
 
     public List<ProjectDto> getAllProjectDto(){
         List<Project> projects = projectRepository.findAll();
