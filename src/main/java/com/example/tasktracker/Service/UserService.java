@@ -19,8 +19,15 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public List<User> getAllUsers(){
+    public List<User> getAllUsersFull(){
         return userRepository.findAll();
+    }
+
+    public List<UserDto> getAllUsers(){
+        
+    List<User> users = userRepository.findAll();
+        return users.stream().map(user -> new UserDto(user.getName(),user.getEmail())).toList();
+
     }
 
     public User getUserById(Long id){
