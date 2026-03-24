@@ -49,9 +49,9 @@ public class UserService {
         if (!userAuth.getPassword().equals(user.getPassword())) {
             throw new RuntimeException("incorrect user_password");
         }
-        if (!userAuth.getEmail().equals(user.getEmail())) {
-            throw new RuntimeException("incorrect user_email");
-        }
+        // if (!userAuth.getEmail().equals(user.getEmail())) {
+        //     throw new RuntimeException("incorrect user_email");
+        // }
         
         UserDto dto = new UserDto(user.getName(), user.getEmail());
         log.info("User logged");
