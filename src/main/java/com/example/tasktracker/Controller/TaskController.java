@@ -1,10 +1,12 @@
 package com.example.tasktracker.Controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.tasktracker.DTO.TaskDto;
 import com.example.tasktracker.Entity.Task;
+import com.example.tasktracker.Entity.Enums.TaskStatus;
 import com.example.tasktracker.Service.TaskService;
 
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 
@@ -42,6 +46,11 @@ public class TaskController {
     @PostMapping
     public TaskDto createTask(@RequestBody Task task) {
         return taskService.createTask(task);
+    }
+
+    @PutMapping("/{id}/status")
+    public TaskDto updateTaskStatus(@PathVariable Long id, @RequestParam(name = "status") TaskStatus taskStatus) {
+        return taskService.updateTaskStatus(id, taskStatus);
     }
     
     @DeleteMapping("/{id}")

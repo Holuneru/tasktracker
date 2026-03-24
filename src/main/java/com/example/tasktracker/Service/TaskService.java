@@ -3,7 +3,7 @@ package com.example.tasktracker.Service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.tasktracker.DTO.TaskDto;
 import com.example.tasktracker.Entity.Project;
@@ -58,9 +58,11 @@ public class TaskService {
 
         User user = userRepository.findById(task.getAssigneeId()).orElseThrow(()-> new RuntimeException("User whith id: "+task.getAssigneeId()+" undefinde"));
         Project project = projectRepository.findById(task.getProjectId()).orElseThrow(()-> new RuntimeException("Project with id: "+task.getProjectId()+" undefinde"));
+        
         if (task.getStatus() == null) {
             task.setStatus(TaskStatus.TODO);
         }
+
         if (task.getPriority() == null) {
             task.setPriority(Priority.MEDIUM);
         }
@@ -77,12 +79,33 @@ public class TaskService {
 
 
     public TaskDto delTask(Long id){
-        Task task = taskRepository.findById(id).orElseThrow(()-> new RuntimeException("UNDEFINDE Task"));
+        Task task = taskRepository.findById(id).orElseThrow(()-> new RuntimeException("UNDEFOUNDE Task"));
         User user = userRepository.findById(task.getAssigneeId()).orElseThrow(()-> new RuntimeException("User whith id: "+task.getAssigneeId()+" undefinde"));
-        Project project = projectRepository.findById(task.getProjectId()).orElseThrow(()-> new RuntimeException("Project with id: "+task.getProjectId()+" undefinde"));
+        Project project = projectRepository.findById(task.getProjectId()).orElseThrow(()-> new RuntimeException("Project with id: "+task.getProjectId()+" undefoundnde"));
         TaskDto dto = new TaskDto(task.getTitle(), task.getDescription(), task.getStatus(), task.getPriority(), project.getName(), user.getName());
         taskRepository.deleteById(id);
         log.info("Task deleted");
         return dto;
     }
+
+    @Transactional
+    public TaskDto updateTaskStatus(Long id, TaskStatus taskStatus){
+        
+        Task task = taskRepository.findById(id).orElseThrow(()-> new RuntimeException("Task UNDEFOUNDE"));
+        User user = userRepository.findById(task.getAssigneeId()).orElseThrow(()-> new RuntimeException("User whith id: "+task.getAssigneeId()+" undefounde"));
+        Project project = projectRepository.findById(task.getProjectId()).orElseThrow(()-> new RuntimeException("Project with id: "+task.getProjectId()+" undefounde"));
+        
+        if (taskStatus == null) {
+            throw new RuntimeException("TskStatus in NULL");
+        }
+        
+        task.setStatus(taskStatus);
+
+        TaskDto dto = new TaskDto(task.getTitle(), task.getDescription(), task.getStatus(), task.getPriority(), project.getName(), user.getName());
+        
+        return dto;
+
+    }
+
+
 }
