@@ -35,6 +35,7 @@ public class Comment {
     @NotBlank
     private String text;
 
+    @NotNull
     private LocalDateTime createdAt;
     
 }
